@@ -1,0 +1,149 @@
+-- CREATE TABLE Customer (
+-- 	Customer_id int PRIMARY KEY NOT NULL,
+-- 	First_name VARCHAR(255),
+-- 	Last_name VARCHAR(255),
+-- 	credit_rating int 
+-- );
+
+-- CREATE TABLE Employee (
+-- 	Employee_id int PRIMARY KEY NOT NULL,
+-- 	First_name VARCHAR(255),
+-- 	Last_name VARCHAR(255),
+-- 	department_id int,
+-- 	manager_id int,
+-- 	CONSTRAINT fk_managerid FOREIGN KEY(manager_id) REFERENCES Employee(Employee_id)
+-- );
+
+-- CREATE TABLE Tree_type(
+-- 	Type_id int PRIMARY KEY NOT NULL,
+-- 	Description VARCHAR(255) 
+-- );
+
+-- CREATE TABLE Product(
+-- 	Product_id int PRIMARY KEY NOT NULL,
+-- 	description VARCHAR(255),
+-- 	color VARCHAR(255),
+-- 	hight int NOT NULL, 
+-- 	type_id int, 
+-- 	surfess int,
+--  valum int,
+-- 	CONSTRAINT fk_typeid FOREIGN KEY(type_id) REFERENCES Tree_type(Type_id)
+-- );
+
+-- CREATE TABLE Department (
+-- 	Department_id int PRIMARY KEY NOT NULL,
+-- 	product_id int,
+-- 	manager_id int,
+-- 	CONSTRAINT fk_manager FOREIGN KEY(manager_id) REFERENCES Employee(Employee_id),
+-- 	CONSTRAINT fk_procuct FOREIGN KEY(product_id) REFERENCES Product(Product_id)
+-- );
+
+-- ALTER TABLE Employee
+-- ADD CONSTRAINT fk_departmentid FOREIGN KEY(department_id) REFERENCES Department(Department_id);
+
+-- CREATE TABLE Tool(
+-- 	Tool_id int PRIMARY KEY NOT NULL
+-- );
+
+-- CREATE TABLE "Order"(
+-- 	Order_id int NOT NULL,
+-- 	Customer_id int NOT NULL,
+-- 	quantity int,
+-- 	product_id int,
+-- 	required_tool int,
+-- 	CONSTRAINT pk_Order PRIMARY KEY(Order_id, Customer_id),
+-- 	CONSTRAINT fk_productid FOREIGN KEY(product_id) REFERENCES Product(Product_id),
+-- 	CONSTRAINT fk_tool FOREIGN KEY(required_tool) REFERENCES Tool(Tool_id)
+-- );
+
+-- INSERT INTO Tool values(1001);
+-- INSERT INTO Tool values(1002);
+-- INSERT INTO Tool values(1003);
+-- INSERT INTO Tool values(1004);
+-- INSERT INTO Tool values(1005);
+-- INSERT INTO Tool values(1006);
+-- INSERT INTO Tool values(1007);
+-- INSERT INTO Tool values(1008);
+-- INSERT INTO Tool values(1009);
+-- INSERT INTO Tool values(1010);
+
+-- INSERT INTO Tree_type VALUES(2001, 'Oak');
+-- INSERT INTO Tree_type VALUES(2002, 'Maple');
+-- INSERT INTO Tree_type VALUES(2003, 'Teak');
+-- INSERT INTO Tree_type VALUES(2004, 'Pine');
+
+-- INSERT INTO Customer VALUES(20, 'Nizan', 'Barel',0);
+-- INSERT INTO Customer VALUES(2, 'Rom', 'Levi',8);
+-- INSERT INTO Customer VALUES(4, 'Ely', 'Morad',35);
+-- INSERT INTO Customer VALUES(6, 'Elad', 'Goldberg',0);
+-- INSERT INTO Customer VALUES(8, 'Nir', 'Shtaine',0);
+-- INSERT INTO Customer VALUES(10, 'Ori', 'Bar',80);
+-- INSERT INTO Customer VALUES(12, 'Yuval', 'Haim',30);
+-- INSERT INTO Customer VALUES(14, 'Niv', 'Kanobi',20);
+-- INSERT INTO Customer VALUES(16, 'Shoval', 'Fader',4);
+-- INSERT INTO Customer VALUES(18, 'Mor', 'Goren',0);
+
+-- INSERT INTO Employee VALUES(100,'Adam','Abraham');
+-- INSERT INTO Employee VALUES(101,'Adrian','Allan');
+-- INSERT INTO Employee VALUES(102,'Alan','Alsop');
+-- INSERT INTO Employee VALUES(103,'Alexander','Anderson');
+-- INSERT INTO Employee VALUES(104,'Andrew','Arnold');
+-- INSERT INTO Employee VALUES(105,'Anthony','Avery');
+-- INSERT INTO Employee VALUES(106,'Austin','Bailey');
+-- INSERT INTO Employee VALUES(107,'Benjamin','Baker');
+-- INSERT INTO Employee VALUES(108,'Blake','Ball');
+-- INSERT INTO Employee VALUES(109,'Boris','Bell');
+-- INSERT INTO Employee VALUES(110,'Brandon','Berry');
+-- INSERT INTO Employee VALUES(111,'Brian','Black');
+-- INSERT INTO Employee VALUES(112,'Cameron','Bond');
+-- INSERT INTO Employee VALUES(113,'Carl','Bower');
+-- INSERT INTO Employee VALUES(114,'Tim','Brown');
+-- INSERT INTO Employee VALUES(115,'Ronnie','Colman');
+
+-- INSERT INTO Product VALUES(4005, 'Table', 'black', 80, 2003, 18000);
+-- INSERT INTO Product VALUES(4006, 'Closet', 'wood', 180, 2004, volum = 1620000 );
+-- INSERT INTO Product VALUES(4007, 'Chair', 'wood', 40, 2001);
+-- INSERT INTO Product VALUES(4008, 'Bed base', 'wood', 25, 2001, 28000);
+
+-- INSERT INTO Department VALUES(5005, 4005, 115)
+-- INSERT INTO Department VALUES(5006, 4006, 112)
+-- INSERT INTO Department VALUES(5007, 4007, 103)
+-- INSERT INTO Department VALUES(5008, 4008, 109)
+
+-- UPDATE Employee SET manager_id = 115,department_id = 5005 WHERE Employee_id = 114;
+-- UPDATE Employee SET manager_id = 115,department_id = 5005 WHERE Employee_id = 113;
+-- UPDATE Employee SET manager_id = 114,department_id = 5005 WHERE Employee_id = 111;
+-- UPDATE Employee SET department_id = 5005 WHERE Employee_id = 115;
+-- UPDATE Employee SET manager_id = 112,department_id = 5006 WHERE Employee_id = 105;
+-- UPDATE Employee SET manager_id = 112,department_id = 5006 WHERE Employee_id = 107;
+-- UPDATE Employee SET manager_id = 107,department_id = 5006 WHERE Employee_id = 106;
+-- UPDATE Employee SET department_id = 5006 WHERE Employee_id = 112;
+-- UPDATE Employee SET manager_id = 103,department_id = 5007 WHERE Employee_id = 100;
+-- UPDATE Employee SET manager_id = 103,department_id = 5007 WHERE Employee_id = 102;
+-- UPDATE Employee SET manager_id = 100,department_id = 5007 WHERE Employee_id = 104;
+-- UPDATE Employee SET department_id = 5007 WHERE Employee_id = 103;
+-- UPDATE Employee SET manager_id = 109,department_id = 5008 WHERE Employee_id = 108;
+-- UPDATE Employee SET manager_id = 109,department_id = 5008 WHERE Employee_id = 110;
+-- UPDATE Employee SET manager_id = 108,department_id = 5008 WHERE Employee_id = 101;
+-- UPDATE Employee SET department_id = 5008 WHERE Employee_id = 109;
+
+-- INSERT INTO 'Order' VALUES(3000,2,1,4005)
+-- INSERT INTO 'Order' VALUES(3001,2,1,4006)
+-- INSERT INTO 'Order' VALUES(3002,4,1,4005)
+-- INSERT INTO 'Order' VALUES(3003,4,1,4006,1005)
+-- INSERT INTO 'Order' VALUES(3004,4,4,4007)
+-- INSERT INTO 'Order' VALUES(3005,4,1,4008)
+-- INSERT INTO 'Order' VALUES(3006,8,1,4005)
+-- INSERT INTO 'Order' VALUES(3007,8,1,4006)
+-- INSERT INTO 'Order' VALUES(3008,8,4,4007)
+-- INSERT INTO 'Order' VALUES(3009,8,3,4008,1001)
+-- INSERT INTO 'Order' VALUES(3010,6,8,4007)
+-- INSERT INTO 'Order' VALUES(3011,10,1,4005)
+-- INSERT INTO 'Order' VALUES(3012,10,6,4007)
+-- INSERT INTO 'Order' VALUES(3013,12,1,4008)
+-- INSERT INTO 'Order' VALUES(3014,12,1,4006)
+-- INSERT INTO 'Order' VALUES(3015,14,2,4008)
+-- INSERT INTO 'Order' VALUES(3016,14,1,4006)
+-- INSERT INTO 'Order' VALUES(3017,16,1,4006)
+-- INSERT INTO 'Order' VALUES(3018,16,1,4008)
+-- INSERT INTO 'Order' VALUES(3019,18,1,4005)

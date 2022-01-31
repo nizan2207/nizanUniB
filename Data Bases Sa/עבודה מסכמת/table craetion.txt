@@ -1,0 +1,56 @@
+CREATE TABLE Customer (
+	Customer_id int PRIMARY KEY NOT NULL,
+	First_name VARCHAR(255),
+	Last_name VARCHAR(255),
+	credit_rating int 
+);
+
+CREATE TABLE Employee (
+	Employee_id int PRIMARY KEY NOT NULL,
+	First_name VARCHAR(255),
+	Last_name VARCHAR(255),
+	department_id int,
+	manager_id int,
+	CONSTRAINT fk_managerid FOREIGN KEY(manager_id) REFERENCES Employee(Employee_id)
+);
+
+CREATE TABLE Tree_type(
+	Type_id int PRIMARY KEY NOT NULL,
+	Description VARCHAR(255) 
+);
+
+CREATE TABLE Product(
+	Product_id int PRIMARY KEY NOT NULL,
+	description VARCHAR(255),
+	color VARCHAR(255),
+	hight int NOT NULL, 
+	type_id int, 
+	surfess int,
+	CONSTRAINT fk_typeid FOREIGN KEY(type_id) REFERENCES Tree_type(Type_id)
+);
+
+CREATE TABLE Department (
+	Department_id int PRIMARY KEY NOT NULL,
+	product_id int,
+	manager_id int,
+	CONSTRAINT fk_manager FOREIGN KEY(manager_id) REFERENCES Employee(Employee_id),
+	CONSTRAINT fk_procuct FOREIGN KEY(product_id) REFERENCES Product(Product_id)
+);
+
+ALTER TABLE Employee
+ADD CONSTRAINT fk_departmentid FOREIGN KEY(department_id) REFERENCES Department(Department_id);
+
+CREATE TABLE Tool(
+	Tool_id int PRIMARY KEY NOT NULL
+);
+
+CREATE TABLE "Order"(
+	Order_id int NOT NULL,
+	Customer_id int NOT NULL,
+	quantity int,
+	product_id int,
+	required_tool int,
+	CONSTRAINT pk_Order PRIMARY KEY(Order_id, Customer_id),
+	CONSTRAINT fk_productid FOREIGN KEY(product_id) REFERENCES Product(Product_id),
+	CONSTRAINT fk_tool FOREIGN KEY(required_tool) REFERENCES Tool(Tool_id)
+);

@@ -1,0 +1,31 @@
+SELECT * FROM Product;
+SELECT * FROM Employee;
+SELECT * FROM Tree_type;
+
+SELECT Product.description FROM Product OUTER JOIN 'Order' ON Product.Product_id = 'Order'.product_id WHERE 'Order'.Customer_id = 2;
+
+SELECT Customer.First_name, Customer.Last_name, Product.description
+FROM (('Order'
+INNER JOIN Customer ON 'Order'.Customer_id = Customer.Customer_id)
+INNER JOIN Product ON 'Order'.product_id = Product.Product_id)
+GROUP BY Product.Product_id
+WHERE Product.Product_id = 4005 AND HAVING COUNT(Product.Product_id >= 1);
+
+SELECT Customer_id
+FROM Customer
+WHERE Customer_id > 10
+INTERSECT
+SELECT Customer_id
+FROM 'Orders'
+WHERE Order_id > 3010;
+
+SELECT FROM(SELECT Customer_id FROM Customer WHERE First_name LIKE 'N%') Customer_id WHERE Customer_id > 12;
+
+SELECT Customer_id FROM 'Orders' WHERE Customer_id IN(SELECT Customer_id FROM 'Orders' WHERE product_id = 4005) AND Customer_id IN(SELECT Customer_id FROM 'Orders' WHERE product_id = 4006) AND Customer_id IN(SELECT Customer_id FROM 'Orders' WHERE product_id = 4007) AND Customer_id IN(SELECT Customer_id FROM 'Orders' WHERE product_id = 4008);
+
+SELECT Customer_id FROM (SELECT *, COUNT(Customer_id) as f
+FROM 'Orders'
+GROUP BY Customer_id
+)
+WHERE f > (SELECT COUNT(ProductID) AS f FROM 'Orders' WHERE Customer_id = 2);
+

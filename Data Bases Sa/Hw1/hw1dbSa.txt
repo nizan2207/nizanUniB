@@ -1,0 +1,249 @@
+CREATE DATABASE realestate
+    WITH 
+    OWNER = postgres
+    ENCODING = 'UTF8'
+    LC_COLLATE = 'Hebrew_Israel.1255'
+    LC_CTYPE = 'Hebrew_Israel.1255'
+    TABLESPACE = pg_default
+    CONNECTION LIMIT = -1;
+
+CREATE TABLE public.buyers
+(
+    bid integer NOT NULL,
+    name character varying(10) COLLATE pg_catalog."default",
+    address character varying(255) COLLATE pg_catalog."default",
+    tel integer NOT NULL,
+    CONSTRAINT buyers_pkey PRIMARY KEY (bid)
+)
+
+CREATE TABLE public.features
+(
+    address character varying(255) COLLATE pg_catalog."default" NOT NULL,
+    feature character varying(255) COLLATE pg_catalog."default" NOT NULL,
+    value integer,
+    CONSTRAINT pk_features PRIMARY KEY (address, feature),
+    CONSTRAINT features_value_key UNIQUE (value),
+    CONSTRAINT features_address_fkey FOREIGN KEY (address)
+        REFERENCES public.houses (address) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+)
+
+CREATE TABLE public.houses
+(
+    address character varying(255) COLLATE pg_catalog."default" NOT NULL,
+    type character varying(255) COLLATE pg_catalog."default",
+    size integer,
+    ramount integer,
+    rid integer,
+    CONSTRAINT houses_pkey PRIMARY KEY (address),
+    CONSTRAINT houses_type_check CHECK (type::text = 'dual'::text OR type::text = 'private'::text)
+)
+
+CREATE TABLE public.realtors
+(
+    rid integer NOT NULL,
+    name character varying(255) COLLATE pg_catalog."default",
+    address character varying(255) COLLATE pg_catalog."default",
+    tel integer NOT NULL,
+    years integer,
+    CONSTRAINT realtors_pkey PRIMARY KEY (rid),
+    CONSTRAINT realtors_years_check CHECK (years >= 5)
+)
+
+CREATE TABLE public.sales
+(
+    sid integer NOT NULL,
+    address character varying(255) COLLATE pg_catalog."default" NOT NULL,
+    samount integer,
+    bid integer,
+    sdate date,
+    CONSTRAINT sales_pkey PRIMARY KEY (sid),
+    CONSTRAINT sales_address_fkey FOREIGN KEY (address)
+        REFERENCES public.houses (address) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION,
+    CONSTRAINT sales_bid_fkey FOREIGN KEY (bid)
+        REFERENCES public.buyers (bid) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE CASCADE
+)
+
+CREATE TABLE public.visits
+(
+    bid integer NOT NULL,
+    address character varying(255) COLLATE pg_catalog."default" NOT NULL,
+    rid integer NOT NULL,
+    impression character varying(255) COLLATE pg_catalog."default" DEFAULT 'Good'::character varying,
+    CONSTRAINT pk_visits PRIMARY KEY (bid, address, rid),
+    CONSTRAINT visits_address_fkey FOREIGN KEY (address)
+        REFERENCES public.houses (address) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION,
+    CONSTRAINT visits_bid_fkey FOREIGN KEY (bid)
+        REFERENCES public.buyers (bid) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE CASCADE,
+    CONSTRAINT visits_rid_fkey FOREIGN KEY (rid)
+        REFERENCES public.realtors (rid) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION,
+    CONSTRAINT visits_impression_check CHECK (impression::text = 'Good'::text OR impression::text = 'Bad'::text)
+)
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+CREATE TABLE houses (
+    address varchar(255) primary key,
+    type varchar(255),
+	size int,
+    rAmount int,
+	rId int,
+	check(Houses.type='dual' or Houses.type='private')
+)
+
+CREATE TABLE Visits (
+	bid int,
+    address varchar(255),
+    rid int,
+    impression varchar(255) default 'Good',
+	constraint pk_Visits primary key (bId,address,rid),
+	check (visits.impression='Good' or visits.impression='Bad'),
+	FOREIGN KEY (address) REFERENCES Houses(address),
+	FOREIGN KEY (bId) REFERENCES Buyers(bid),
+	FOREIGN KEY (rId) REFERENCES Realtors(rid)
+)
+
+CREATE TABLE sales (
+	sid int primary key unique,
+    address varchar(255) not null,
+    samount int,
+    bid int,
+	sdate date,
+	FOREIGN KEY (address) REFERENCES Houses(address),
+	FOREIGN KEY (bid) REFERENCES buyers(bid) on delete cascade
+)
+
+CREATE TABLE Buyers (
+    bId int primary key,
+    name varchar(10),
+    address varchar(255),
+	tel int NOT NULL
+)
+
+CREATE TABLE Realtors (
+    rId int primary key UNIQUE,
+    name varchar(255),
+    address varchar(255),
+	tel int NOT NULL,
+    years int,
+	check (years>=5)
+);
+
+CREATE TABLE Features (
+    address varchar(255),
+    feature varchar(255),
+    value integer unique,
+	constraint pk_features primary key (address, feature),
+	foreign key (address) references houses(address)
+);
+////////////////////////////////////////////////////////////////////////////////////////////
+CREATE TABLE "Realtors" (
+    "rId" int primary key UNIQUE,
+    "name" varchar(255),
+    "address" varchar(255),
+	"tel" int NOT NULL,
+    "years" int,
+	check ("years">=5)
+);
+CREATE TABLE "Buyers" (
+    "bId" int primary key,
+    "name" varchar(10),
+    "address" varchar(255),
+	"tel" int NOT NULL
+);
+CREATE TABLE "Houses" (
+    "address" varchar(255) primary key,
+    "type" varchar(255),
+	"size" int,
+    "rAmount" int,
+	"rId" int,
+	check("Houses"."type"='dual' or "Houses"."type"='private'),
+	FOREIGN KEY ("rId") REFERENCES "Realtors"("rId")
+)
+CREATE TABLE "Features" (
+    "address" varchar(255),
+    "feature" varchar(255),
+    "value" integer unique,
+	constraint "pk_features" primary key ("address", "feature"),
+	foreign key ("address") references "Houses"("address")
+);
+CREATE TABLE "Visits" (
+	"bId" int,
+    "address" varchar(255),
+    "rId" int,
+    "impression" varchar(255) default 'Good',
+	constraint "pk_Visits" primary key ("bId","address","rId"),
+	check ("Visits"."impression"='Good' or "Visits"."impression"='Bad'),
+	FOREIGN KEY ("address") REFERENCES "Houses"("address"),
+	FOREIGN KEY ("bId") REFERENCES "Buyers"("bId") ON DELETE CASCADE,
+	FOREIGN KEY ("rId") REFERENCES "Realtors"("rId")
+);
+CREATE TABLE "Sales" (
+	"sId" int primary key unique,
+    "address" varchar(255) not null,
+    "sAmount" int,
+    "bId" int,
+	"sdate" date,
+	FOREIGN KEY ("address") REFERENCES "Houses"("address"),
+	FOREIGN KEY ("bId") REFERENCES "Buyers"("bId") on delete cascade
+);
+////////////////////////////////
+CREATE TABLE "Realtors" (
+    "rId" INTEGER PRIMARY KEY,
+    "name" VARCHAR(255),
+    "address" VARCHAR(255),
+	"tel" INTEGER NOT NULL,
+    "years" INTEGER,
+	CHECK ("years">=5)
+);
+CREATE TABLE "Buyers" (
+    "bId" INTEGER PRIMARY KEY,
+    "name" VARCHAR(10),
+    "address" VARCHAR(255),
+	"tel" INTEGER NOT NULL
+);
+CREATE TABLE "Houses" (
+    "address" VARCHAR(255) PRIMARY KEY,
+    "type" VARCHAR(255),
+	"size" INTEGER,
+    "rAmount" INTEGER,
+	"rId" INTEGER,
+	CHECK("Houses"."type"='dual' OR "Houses"."type"='private'),
+	FOREIGN KEY ("rId") REFERENCES "Realtors"("rId")
+)
+CREATE TABLE "Features" (
+    "address" VARCHAR(255),
+    "feature" VARCHAR(255),
+    "value" INTEGER UNIQUE,
+	CONSTRAINT "pk_features" PRIMARY KEY ("address", "feature"),
+	FOREIGN KEY ("address") REFERENCES "Houses"("address")
+);
+CREATE TABLE "Visits" (
+	"bId" INTEGER,
+    "address" VARCHAR(255),
+    "rId" INTEGER,
+    "impression" VARCHAR(255) DEFAULT 'Good',
+	CONSTRAINT "pk_Visits" PRIMARY KEY ("bId","address","rId"),
+	CHECK ("Visits"."impression"='Good' OR "Visits"."impression"='Bad'),
+	FOREIGN KEY ("address") REFERENCES "Houses"("address"),
+	FOREIGN KEY ("bId") REFERENCES "Buyers"("bId") ON DELETE CASCADE,
+	FOREIGN KEY ("rId") REFERENCES "Realtors"("rId")
+);
+CREATE TABLE "Sales" (
+	"sId" INTEGER PRIMARY KEY,
+    "address" VARCHAR(255) NOT NULL,
+    "sAmount" INTEGER,
+    "bId" INTEGER,
+	"sdate" DATE,
+	FOREIGN KEY ("address") REFERENCES "Houses"("address"),
+	FOREIGN KEY ("bId") REFERENCES "Buyers"("bId") ON DELETE CASCADE
+);

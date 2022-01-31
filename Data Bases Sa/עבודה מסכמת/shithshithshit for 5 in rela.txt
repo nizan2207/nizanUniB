@@ -1,0 +1,7 @@
+firstItem<- π_(Customer_id ) (σ_(Prodouct_id=4005) (Orders))
+secItem<- π_(Customer_id ) (σ_(Prodouct_id=4006) (Orders))
+thirdItem<- π_(Customer_id ) (σ_(Prodouct_id=4007) (Orders))
+forthItem<- π_(Customer_id ) (σ_(Prodouct_id=4008) (Orders))
+allItems<-((firstItem⋈secItem)⋈thirdItem)⋈forthItem
+CID<- π_(Customer_id ) (allItems⋈Orders)
+result<- π_(Credit_rating,First_name,Last_name ) (CID⋈Customer)
